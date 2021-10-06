@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">LocationNotifier</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="GeofenceHelper">GeofenceHelper</string>
+    <string name="locality">Locality</string>
+    <string name="enter_lat_long">Enter Lat, Long</string>
+    <string name="enter_radius_in_meters">Enter Radius (in meters)</string>
+    <string name="submit">Submit</string>
+    <string name="onSuccess">onSuccess: Geofence Added</string>
+    <string name="geo_fence_id">SOME_GEOFENCE_ID</string>
+    <string name="no_permission">Do not have the permission</string>
+    <string name="geofence_not_available">GEOFENCE_NOT_AVAILABLE</string>
+    <string name="too_many_geofences">GEOFENCE_TOO_MANY_GEOFENCES</string>
+    <string name="too_many_pending_intents">GEOFENCE_TOO_MANY_PENDING_INTENTS</string>
+    <string name="required_field">Required field</string>
+    <string name="city">\"City : \"</string>
+    <string name="pincode">\"Pincode : \"</string>
+    <string name="nullString">null</string>
+    <string name="marker_in_delhi">Marker in Delhi</string>
 </resources>

@@ -13,8 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class GeofenceHelper extends ContextWrapper {
 
-    private static final String TAG = "GeofenceHelper";
-    PendingIntent pendingIntent;
+    private PendingIntent pendingIntent;
 
     public GeofenceHelper(Context base) {
         super(base);
@@ -51,13 +50,13 @@ public class GeofenceHelper extends ContextWrapper {
             switch (apiException.getStatusCode()){
                 case GeofenceStatusCodes
                         .GEOFENCE_NOT_AVAILABLE:
-                    return "GEOFENCE_NOT_AVAILABLE";
+                    return getString(R.string.geofence_not_available);
                 case GeofenceStatusCodes
                         .GEOFENCE_TOO_MANY_GEOFENCES:
-                    return "GEOFENCE_TOO_MANY_GEOFENCES";
+                    return getString(R.string.too_many_geofences);
                 case  GeofenceStatusCodes
                         .GEOFENCE_TOO_MANY_PENDING_INTENTS:
-                    return "GEOFENCE_TOO_MANY_PENDING_INTENTS";
+                    return getString(R.string.too_many_pending_intents);
             }
         }
         return e.getLocalizedMessage();
