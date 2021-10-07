@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -20,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="10dp"
-        android:background="@color/white"
+        android:background="@drawable/rounded_corner_white"
         android:padding="5dp"
         android:text="@string/locality"
         android:textAlignment="center"
@@ -35,7 +34,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="50dp"
         android:layout_marginBottom="132dp"
-        android:background="@color/white"
+        android:autofillHints="28.6482929,77.3720005"
+        android:background="@drawable/rounded_corner_white"
         android:ems="10"
         android:hint="@string/enter_lat_long"
         android:inputType="textPersonName"
@@ -49,7 +49,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="50dp"
         android:layout_marginBottom="79dp"
-        android:background="@color/white"
+        android:autofillHints="50"
+        android:background="@drawable/rounded_corner_white"
         android:ems="10"
         android:hint="@string/enter_radius_in_meters"
         android:inputType="numberDecimal"
@@ -62,7 +63,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:background="@color/black"
+        android:background="@drawable/rounded_corner_black"
         android:text="@string/submit"
         android:textColor="@color/white" />
 </RelativeLayout>

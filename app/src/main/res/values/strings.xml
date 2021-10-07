@@ -15,6 +15,6 @@
     <string name="required_field">Required field</string>
     <string name="city">\"City : \"</string>
     <string name="pincode">\"Pincode : \"</string>
-    <string name="nullString">null</string>
     <string name="marker_in_delhi">Marker in Delhi</string>
+    <string name="invalid">Invalid</string>
 </resources>
