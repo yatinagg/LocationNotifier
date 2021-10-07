@@ -89,10 +89,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String addressLine = geocoder.getFromLocation(lat, lng, 1).get(0).getAddressLine(0);
             String city = geocoder.getFromLocation(lat, lng, 1).get(0).getLocality();
             String pin = geocoder.getFromLocation(lat, lng, 1).get(0).getPostalCode();
-            if (city.equals("null"))
-                textView.setText(city);
-            else if (addressLine.equals("null"))
+            if (!addressLine.equals("null"))
                 textView.setText(addressLine);
+            else if (!city.equals("null"))
+                textView.setText(city);
             else
                 textView.setText(pin);
         } catch (Exception e) {
