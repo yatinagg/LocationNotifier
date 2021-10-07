@@ -31,17 +31,17 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             case Geofence
                     .GEOFENCE_TRANSITION_ENTER:
                 Toast.makeText(context, "GEOFENCE_TRANSITION_ENTER", Toast.LENGTH_SHORT).show();
-                mapsActivity.createNotification("Geofence","GEOFENCE_TRANSITION_ENTER");
+                mapsActivity.createNotification("Geofence", "GEOFENCE_TRANSITION_ENTER");
                 break;
             case Geofence
                     .GEOFENCE_TRANSITION_DWELL:
                 Toast.makeText(context, "GEOFENCE_TRANSITION_DWELL", Toast.LENGTH_SHORT).show();
-                mapsActivity.createNotification("Geofence","GEOFENCE_TRANSITION_DWELL");
+                mapsActivity.createNotification("Geofence", "GEOFENCE_TRANSITION_DWELL");
                 break;
             case Geofence
                     .GEOFENCE_TRANSITION_EXIT:
                 Toast.makeText(context, "GEOFENCE_TRANSITION_EXIT", Toast.LENGTH_SHORT).show();
-                mapsActivity.createNotification("Geofence","GEOFENCE_TRANSITION_EXIT");
+                mapsActivity.createNotification("Geofence", "GEOFENCE_TRANSITION_EXIT");
                 break;
         }
     }

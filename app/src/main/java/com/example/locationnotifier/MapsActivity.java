@@ -89,14 +89,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setupListener();
     }
 
-    private void setLocation(){
+    private void setLocation() {
         try {
             String addressLine = geocoder.getFromLocation(lat, lng, 1).get(0).getAddressLine(0);
             String city = geocoder.getFromLocation(lat, lng, 1).get(0).getLocality();
             String pin = geocoder.getFromLocation(lat, lng, 1).get(0).getPostalCode();
             if (city.equals("null"))
                 textView.setText(city);
-            else if(addressLine.equals("null"))
+            else if (addressLine.equals("null"))
                 textView.setText(addressLine);
             else
                 textView.setText(pin);
@@ -204,22 +204,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return true;
     }
 
-    public void createNotification(String title, String text){
+    public void createNotification(String title, String text) {
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("My Notification","Notification Name",NotificationManager.IMPORTANCE_DEFAULT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("My Notification", "Notification Name", NotificationManager.IMPORTANCE_DEFAULT);
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.cancelAll();
             manager.createNotificationChannel(channel);
         }
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(MapsActivity.this,"My Notification");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(MapsActivity.this, "My Notification");
         builder.setContentTitle(title);
         builder.setContentText(text);
         builder.setSmallIcon(R.drawable.marker);
         builder.setAutoCancel(true);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MapsActivity.this);
-        managerCompat.notify(14,builder.build());
+        managerCompat.notify(14, builder.build());
     }
 
     @Override
