@@ -18,7 +18,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "Geofence Triggered", Toast.LENGTH_SHORT).show();
-        MapsActivity mapsActivity = new MapsActivity();
+        GeofenceHelper geofenceHelper = new GeofenceHelper(context.getApplicationContext());
 
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
@@ -31,17 +31,17 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             case Geofence
                     .GEOFENCE_TRANSITION_ENTER:
                 Toast.makeText(context, "GEOFENCE_TRANSITION_ENTER", Toast.LENGTH_SHORT).show();
-                mapsActivity.createNotification("Geofence", "GEOFENCE_TRANSITION_ENTER");
+                geofenceHelper.createNotification("Geofence", "GEOFENCE_TRANSITION_ENTER");
                 break;
             case Geofence
                     .GEOFENCE_TRANSITION_DWELL:
                 Toast.makeText(context, "GEOFENCE_TRANSITION_DWELL", Toast.LENGTH_SHORT).show();
-                mapsActivity.createNotification("Geofence", "GEOFENCE_TRANSITION_DWELL");
+                geofenceHelper.createNotification("Geofence", "GEOFENCE_TRANSITION_DWELL");
                 break;
             case Geofence
                     .GEOFENCE_TRANSITION_EXIT:
                 Toast.makeText(context, "GEOFENCE_TRANSITION_EXIT", Toast.LENGTH_SHORT).show();
-                mapsActivity.createNotification("Geofence", "GEOFENCE_TRANSITION_EXIT");
+                geofenceHelper.createNotification("Geofence", "GEOFENCE_TRANSITION_EXIT");
                 break;
         }
     }

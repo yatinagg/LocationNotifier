@@ -1,10 +1,17 @@
 package com.example.locationnotifier;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.os.Build;
+import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.location.Geofence;
@@ -44,6 +51,25 @@ public class GeofenceHelper extends ContextWrapper {
         Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this, 1410, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         return pendingIntent;
+    }
+
+    public void createNotification(String title, String text) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("My Notification", "Notification Name", NotificationManager.IMPORTANCE_DEFAULT);
+            Log.d("why", String.valueOf(NotificationManager.class));
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.cancelAll();
+            manager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(GeofenceHelper.this, "My Notification");
+        builder.setContentTitle(title);
+        builder.setContentText(text);
+        builder.setSmallIcon(R.drawable.marker);
+        builder.setAutoCancel(true);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(GeofenceHelper.this);
+        managerCompat.notify(14, builder.build());
     }
 
     public String getErrorString(Exception e) {
