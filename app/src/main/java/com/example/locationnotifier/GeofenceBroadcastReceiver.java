@@ -1,6 +1,5 @@
 package com.example.locationnotifier;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +9,11 @@ import android.widget.Toast;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
+// Broadcast receiver
 public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "GeofenceBroadcastReceiver";
+    private static final String TAG = "Geofence";
 
-    @SuppressLint("LongLogTag")
     @Override
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "Geofence Triggered", Toast.LENGTH_SHORT).show();
@@ -26,6 +25,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             return;
         }
 
+        // generate notification
         int transitionType = geofencingEvent.getGeofenceTransition();
         switch (transitionType) {
             case Geofence

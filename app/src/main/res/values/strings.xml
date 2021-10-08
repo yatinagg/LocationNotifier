@@ -15,6 +15,8 @@
     <string name="required_field">Required field</string>
     <string name="city">\"City : \"</string>
     <string name="pincode">\"Pincode : \"</string>
-    <string name="marker_in_delhi">Marker in Delhi</string>
+    <string name="marker_in_ghaziabad">Marker in Ghaziabad</string>
     <string name="invalid">Invalid</string>
+    <string name="app_required_location_permission">App required location permission</string>
+    <string name="error">Error</string>
 </resources>

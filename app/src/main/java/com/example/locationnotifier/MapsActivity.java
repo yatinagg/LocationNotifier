@@ -1,11 +1,15 @@
 package com.example.locationnotifier;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
@@ -31,6 +35,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -55,15 +61,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        // create shared preference helper
+        SharedPrefHelper.create(this);
+        SharedPrefHelper.getData();
+        // retrieve the previously stored data
+        if(SharedPrefHelper.getLat() != -1000){
+            lat = SharedPrefHelper.getLat();
+            lng = SharedPrefHelper.getLng();
+            radius = SharedPrefHelper.getRad();
+        }
+    }
 
-        if (allPermissionsGranted())
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // check whether all permissions are granted or not
+        if (allPermissionsGranted()) {
+            // start maps
             startMaps();
-        else
+        }
+        else {
+            // request the required permissions
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
-
+        }
     }
 
     private void startMaps() {
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -79,11 +103,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         editTextRadius = (EditText) findViewById(R.id.editTextRadius);
         textView = (TextView) findViewById(R.id.textViewLocality);
         geocoder = new Geocoder(this, Locale.getDefault());
+
+        // set location for any previous location
         setLocation();
 
+        // listeners
         setupListener();
     }
 
+    // set the location for display text
     private void setLocation() {
         try {
             String addressLine = geocoder.getFromLocation(lat, lng, 1).get(0).getAddressLine(0);
@@ -95,6 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 textView.setText(city);
             else
                 textView.setText(pin);
+            SharedPrefHelper.store(lat,lng,radius);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,6 +132,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void setupListener() {
         button.setOnClickListener(view -> {
+            // check for validation of text fields
             if (!validateTextFields())
                 return;
             LatLng latLng = new LatLng(lat, lng);
@@ -116,6 +146,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    // validate text fields
     private boolean validateTextFields() {
         boolean valid = true;
         if (TextUtils.isEmpty(editTextLatLong.getText().toString())) {
@@ -152,16 +183,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Delhi and move the camera
-        LatLng delhi = new LatLng(28.6482929, 77.3720005);
-        mMap.addMarker(new MarkerOptions().position(delhi).title(getString(R.string.marker_in_delhi)).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(delhi, 15));
-        addGeofence(delhi, radius);
-        addCircle(delhi, radius);
+        // Add a marker in Ghaziabad and move the camera
+        LatLng ghaziabad = new LatLng(lat, lng);
+        mMap.addMarker(new MarkerOptions().position(ghaziabad).title(getString(R.string.marker_in_ghaziabad)).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ghaziabad, 15));
+        addGeofence(ghaziabad, radius);
+        addCircle(ghaziabad, radius);
     }
 
 
-    @SuppressLint("MissingPermission")
+    // add geo fence
     private void addGeofence(LatLng latLng, float radius) {
 
         String GEOFENCE_ID = getString(R.string.geo_fence_id);
@@ -169,6 +200,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GeofencingRequest geofencingRequest = geofenceHelper.geofencingRequest(geofence);
         PendingIntent pendingIntent = geofenceHelper.getPendingIntent();
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
+            return;
+        }
         geofencingClient.addGeofences(geofencingRequest, pendingIntent)
                 .addOnSuccessListener(unused -> Log.d(TAG, getString(R.string.onSuccess)))
                 .addOnFailureListener(e -> {
@@ -177,10 +212,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
     }
 
+    // add marker
     private void addMarker(LatLng latLng) {
         mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
     }
 
+    // add circle
     private void addCircle(LatLng latLng, float radius) {
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(latLng);
@@ -191,6 +228,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addCircle(circleOptions);
     }
 
+    // check whether all permissions are granted or not
     private boolean allPermissionsGranted() {
         for (String permission : REQUIRED_PERMISSIONS)
             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -206,8 +244,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (allPermissionsGranted())
                 startMaps();
             else {
-                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
+                // create dialog box
+                createAlertDialog();
+                // open settings page for permissions
+                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts("package", getPackageName(), null)));
             }
         }
+    }
+
+    // create alert dialog box
+    private void createAlertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme);
+        builder.setMessage(R.string.app_required_location_permission);
+        builder.setTitle(R.string.error);
+        builder.setCancelable(false);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        // auto timer for alert dialog box
+        final Timer timer2 = new Timer();
+        timer2.schedule(new TimerTask() {
+            public void run() {
+                alertDialog.dismiss();
+                timer2.cancel();
+            }
+        }, 1000);
     }
 }

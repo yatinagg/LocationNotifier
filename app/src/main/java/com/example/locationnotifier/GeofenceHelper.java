@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -19,6 +18,7 @@ import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.maps.model.LatLng;
 
+// Geofence Helper class
 public class GeofenceHelper extends ContextWrapper {
 
     private PendingIntent pendingIntent;
@@ -53,11 +53,11 @@ public class GeofenceHelper extends ContextWrapper {
         return pendingIntent;
     }
 
+    // function for creating notification on geofence
     public void createNotification(String title, String text) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("My Notification", "Notification Name", NotificationManager.IMPORTANCE_DEFAULT);
-            Log.d("why", String.valueOf(NotificationManager.class));
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.cancelAll();
             manager.createNotificationChannel(channel);
@@ -72,6 +72,7 @@ public class GeofenceHelper extends ContextWrapper {
         managerCompat.notify(14, builder.build());
     }
 
+    // get error string
     public String getErrorString(Exception e) {
         if (e instanceof ApiException) {
             ApiException apiException = (ApiException) e;
