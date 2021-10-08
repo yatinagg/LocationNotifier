@@ -65,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SharedPrefHelper.create(this);
         SharedPrefHelper.getData();
         // retrieve the previously stored data
-        if(SharedPrefHelper.getLat() != -1000){
+        if (SharedPrefHelper.getLat() != -1000) {
             lat = SharedPrefHelper.getLat();
             lng = SharedPrefHelper.getLng();
             radius = SharedPrefHelper.getRad();
@@ -79,8 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (allPermissionsGranted()) {
             // start maps
             startMaps();
-        }
-        else {
+        } else {
             // request the required permissions
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
@@ -123,7 +122,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 textView.setText(city);
             else
                 textView.setText(pin);
-            SharedPrefHelper.store(lat,lng,radius);
+            SharedPrefHelper.store(lat, lng, radius);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -254,7 +253,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     // create alert dialog box
-    private void createAlertDialog(){
+    private void createAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme);
         builder.setMessage(R.string.app_required_location_permission);
         builder.setTitle(R.string.error);
