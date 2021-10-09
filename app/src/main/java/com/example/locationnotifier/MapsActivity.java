@@ -44,7 +44,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private GeofencingClient geofencingClient;
     private Geocoder geocoder;
-    private float radius = 500;
+    private int radius = 500;
     private GeofenceHelper geofenceHelper;
     private double lat = 28.6482929;
     private double lng = 77.3720005;
@@ -61,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // create shared preference helper
         SharedPrefHelper.create(this);
+        setupView();
 
     }
 
@@ -89,10 +90,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         geofencingClient = LocationServices.getGeofencingClient(this);
         geofenceHelper = new GeofenceHelper(this);
 
-        button = (Button) findViewById(R.id.button);
-        editTextLatLong = (EditText) findViewById(R.id.editTextLatLong);
-        editTextRadius = (EditText) findViewById(R.id.editTextRadius);
-        textView = (TextView) findViewById(R.id.textViewLocality);
         geocoder = new Geocoder(this, Locale.getDefault());
 
         // retrieve the previously stored data
@@ -100,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (latString != null) {
             lat = Double.parseDouble(latString);
             lng = Double.parseDouble(SharedPrefHelper.getLng());
-            radius = Float.parseFloat(SharedPrefHelper.getRad());
+            radius = Integer.parseInt(SharedPrefHelper.getRad());
             setupTextFields();
         }
 
@@ -109,6 +106,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // listeners
         setupListener();
+    }
+
+    public void setupView(){
+        button = (Button) findViewById(R.id.button);
+        editTextLatLong = (EditText) findViewById(R.id.editTextLatLong);
+        editTextRadius = (EditText) findViewById(R.id.editTextRadius);
+        textView = (TextView) findViewById(R.id.textViewLocality);
     }
 
     private void setupTextFields() {
@@ -136,6 +140,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void setupListener() {
+
         button.setOnClickListener(view -> {
             // check for validation of text fields
             if (!validateTextFields())
@@ -179,7 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 editTextLatLong.setError(getString(R.string.invalid));
                 return false;
             }
-            radius = Float.parseFloat(editTextRadius.getText().toString());
+            radius = Integer.parseInt(editTextRadius.getText().toString());
         }
         return valid;
     }
@@ -249,8 +254,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (allPermissionsGranted())
                 startMaps();
             else {
-                // create dialog box
-                //createAlertDialog();
+                // create toast alert
                 Toast.makeText(this, R.string.app_required_location_permission, Toast.LENGTH_SHORT).show();
                 // open settings page for permissions
                 startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
@@ -18,13 +20,16 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="25dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded_corner_white"
         android:padding="5dp"
         android:text="@string/locality"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/map" />
 
     <EditText
         android:id="@+id/editTextLatLong"
@@ -33,13 +38,17 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="50dp"
-        android:layout_marginBottom="132dp"
         android:autofillHints="28.6482929,77.3720005"
         android:background="@drawable/rounded_corner_white"
         android:ems="10"
         android:hint="@string/enter_lat_long"
         android:inputType="textPersonName"
-        android:padding="5dp" />
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextRadius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLocality"
+        app:layout_constraintVertical_bias="0.95" />
 
     <EditText
         android:id="@+id/editTextRadius"
@@ -48,22 +57,29 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="50dp"
-        android:layout_marginBottom="79dp"
+        android:layout_marginBottom="28dp"
         android:autofillHints="50"
         android:background="@drawable/rounded_corner_white"
         android:ems="10"
         android:hint="@string/enter_radius_in_meters"
-        android:inputType="numberDecimal"
-        android:padding="5dp" />
+        android:inputType="number"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="44dp"
         android:background="@drawable/rounded_corner_black"
         android:text="@string/submit"
-        android:textColor="@color/white" />
-</RelativeLayout>
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,7 +18,7 @@ public class SharedPrefHelper {
     }
 
     // store data to shared preference
-    public static void store(double lat, double lng, double rad) {
+    public static void store(double lat, double lng, int rad) {
         editor.putString("Latitude", String.valueOf(lat));
         editor.putString("Longitude", String.valueOf(lng));
         editor.putString("Radius", String.valueOf(rad));
