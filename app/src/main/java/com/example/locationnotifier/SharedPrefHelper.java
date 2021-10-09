@@ -10,6 +10,9 @@ public class SharedPrefHelper {
 
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
+    private static final String LATITUDE = "Latitude";
+    private static final String LONGITUDE = "Longitude";
+    private static final String RADIUS = "Radius";
 
     // create shared preference
     public static void create(Context context) {
@@ -19,24 +22,24 @@ public class SharedPrefHelper {
 
     // store data to shared preference
     public static void store(double lat, double lng, int rad) {
-        editor.putString("Latitude", String.valueOf(lat));
-        editor.putString("Longitude", String.valueOf(lng));
-        editor.putString("Radius", String.valueOf(rad));
+        editor.putString(LATITUDE, String.valueOf(lat));
+        editor.putString(LONGITUDE, String.valueOf(lng));
+        editor.putString(RADIUS, String.valueOf(rad));
         editor.apply();
     }
 
     // getters
 
     public static String getLat() {
-        return sharedPreferences.getString("Latitude", null);
+        return sharedPreferences.getString(LATITUDE, null);
     }
 
     public static String getLng() {
-        return sharedPreferences.getString("Longitude", null);
+        return sharedPreferences.getString(LONGITUDE, null);
     }
 
     public static String getRad() {
-        return sharedPreferences.getString("Radius", null);
+        return sharedPreferences.getString(RADIUS, null);
     }
 
 }
