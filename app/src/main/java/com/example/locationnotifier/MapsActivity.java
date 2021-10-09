@@ -1,7 +1,6 @@
 package com.example.locationnotifier;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +14,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -35,8 +35,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -63,13 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // create shared preference helper
         SharedPrefHelper.create(this);
-        SharedPrefHelper.getData();
-        // retrieve the previously stored data
-        if (SharedPrefHelper.getLat() != -1000) {
-            lat = SharedPrefHelper.getLat();
-            lng = SharedPrefHelper.getLng();
-            radius = SharedPrefHelper.getRad();
-        }
+
     }
 
     @Override
@@ -103,11 +95,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         textView = (TextView) findViewById(R.id.textViewLocality);
         geocoder = new Geocoder(this, Locale.getDefault());
 
+        // retrieve the previously stored data
+        String latString = SharedPrefHelper.getLat();
+        if (latString != null) {
+            lat = Double.parseDouble(latString);
+            lng = Double.parseDouble(SharedPrefHelper.getLng());
+            radius = Float.parseFloat(SharedPrefHelper.getRad());
+            setupTextFields();
+        }
+
         // set location for any previous location
         setLocation();
 
         // listeners
         setupListener();
+    }
+
+    private void setupTextFields() {
+        editTextLatLong.setText(String.format("%s,%s", lat, lng));
+        editTextRadius.setText(String.valueOf(radius));
     }
 
     // set the location for display text
@@ -244,7 +250,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startMaps();
             else {
                 // create dialog box
-                createAlertDialog();
+                //createAlertDialog();
+                Toast.makeText(this, R.string.app_required_location_permission, Toast.LENGTH_SHORT).show();
                 // open settings page for permissions
                 startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                         Uri.fromParts("package", getPackageName(), null)));
@@ -252,22 +259,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    // create alert dialog box
-    private void createAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme);
-        builder.setMessage(R.string.app_required_location_permission);
-        builder.setTitle(R.string.error);
-        builder.setCancelable(false);
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        // auto timer for alert dialog box
-        final Timer timer2 = new Timer();
-        timer2.schedule(new TimerTask() {
-            public void run() {
-                alertDialog.dismiss();
-                timer2.cancel();
-            }
-        }, 1000);
-    }
 }

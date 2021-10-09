@@ -9,11 +9,7 @@ import android.content.SharedPreferences;
 public class SharedPrefHelper {
 
     private static SharedPreferences sharedPreferences;
-    private static double lat = -1000;
-    private static double lng = -1000;
-    private static float rad = -1000;
     private static SharedPreferences.Editor editor;
-    private static final String[] keys = {"Latitude", "Longitude", "Radius"};
 
     // create shared preference
     public static void create(Context context) {
@@ -21,46 +17,26 @@ public class SharedPrefHelper {
         editor = sharedPreferences.edit();
     }
 
-    // get data from shared preference
-    public static void getData() {
-        if (sharedPreferences.getString(keys[0], null) == null)
-            return;
-        SharedPrefHelper.setLat(Double.parseDouble(sharedPreferences.getString(keys[0], null)));
-        SharedPrefHelper.setLng(Double.parseDouble(sharedPreferences.getString(keys[1], null)));
-        SharedPrefHelper.setRad(Float.parseFloat(sharedPreferences.getString(keys[2], null)));
-    }
-
     // store data to shared preference
     public static void store(double lat, double lng, double rad) {
-        editor.putString(keys[0], String.valueOf(lat));
-        editor.putString(keys[1], String.valueOf(lng));
-        editor.putString(keys[2], String.valueOf(rad));
+        editor.putString("Latitude", String.valueOf(lat));
+        editor.putString("Longitude", String.valueOf(lng));
+        editor.putString("Radius", String.valueOf(rad));
         editor.apply();
     }
 
-    // getters and setters
+    // getters
 
-    public static double getLat() {
-        return lat;
+    public static String getLat() {
+        return sharedPreferences.getString("Latitude", null);
     }
 
-    public static void setLat(double lat) {
-        SharedPrefHelper.lat = lat;
+    public static String getLng() {
+        return sharedPreferences.getString("Longitude", null);
     }
 
-    public static double getLng() {
-        return lng;
+    public static String getRad() {
+        return sharedPreferences.getString("Radius", null);
     }
 
-    public static void setLng(double lng) {
-        SharedPrefHelper.lng = lng;
-    }
-
-    public static float getRad() {
-        return rad;
-    }
-
-    public static void setRad(float rad) {
-        SharedPrefHelper.rad = rad;
-    }
 }
