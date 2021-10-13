@@ -2,6 +2,7 @@ package com.example.locationnotifier;
 
 import android.Manifest;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,6 +37,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Date;
 import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -108,7 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setupListener();
     }
 
-    public void setupView(){
+    public void setupView() {
         button = (Button) findViewById(R.id.button);
         editTextLatLong = (EditText) findViewById(R.id.editTextLatLong);
         editTextRadius = (EditText) findViewById(R.id.editTextRadius);
@@ -153,7 +157,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             addGeofence(latLng, radius);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             setLocation();
+            closeKeyboard();
         });
+    }
+
+    private void closeKeyboard() {
+        // this will give us the view which is currently focus in this layout
+        View view = this.getCurrentFocus();
+
+        // if nothing is currently focus then this will protect the app from crash
+        if (view != null) {
+            // now assign the system service to InputMethodManager
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     // validate text fields
@@ -185,6 +202,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
             radius = Integer.parseInt(editTextRadius.getText().toString());
+            if (radius == 0) {
+                editTextRadius.setError(getString(R.string.invalid));
+                return false;
+            }
         }
         return valid;
     }
