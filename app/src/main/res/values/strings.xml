@@ -19,4 +19,5 @@
     <string name="invalid">Invalid</string>
     <string name="app_required_location_permission">App required location permission</string>
     <string name="error">Error</string>
+    <string name="lat_lng">%f,%f</string>
 </resources>

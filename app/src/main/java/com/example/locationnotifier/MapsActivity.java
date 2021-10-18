@@ -37,14 +37,14 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Date;
 import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapsActivity";
     private final int REQUEST_CODE_PERMISSIONS = 1410;
-    private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.ACCESS_FINE_LOCATION"};
+    private final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+
     private GoogleMap mMap;
     private GeofencingClient geofencingClient;
     private Geocoder geocoder;
@@ -78,6 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             startMaps();
         } else {
             // request the required permissions
+            //Log.d("perm", String.valueOf(REQUIRED_PERMISSIONS0)));
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
     }
@@ -120,7 +121,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void setupTextFields() {
-        editTextLatLong.setText(String.format("%s,%s", lat, lng));
+
+        editTextLatLong.setText(getString(R.string.lat_lng, lat, lng));
         editTextRadius.setText(String.valueOf(radius));
     }
 
@@ -130,9 +132,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String addressLine = geocoder.getFromLocation(lat, lng, 1).get(0).getAddressLine(0);
             String city = geocoder.getFromLocation(lat, lng, 1).get(0).getLocality();
             String pin = geocoder.getFromLocation(lat, lng, 1).get(0).getPostalCode();
-            if (!addressLine.equals("null"))
+            if (addressLine != null)
                 textView.setText(addressLine);
-            else if (!city.equals("null"))
+            else if (city != null)
                 textView.setText(city);
             else
                 textView.setText(pin);
