@@ -114,10 +114,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void setupView() {
-        button = (Button) findViewById(R.id.button);
-        editTextLatLong = (EditText) findViewById(R.id.editTextLatLong);
-        editTextRadius = (EditText) findViewById(R.id.editTextRadius);
-        textView = (TextView) findViewById(R.id.textViewLocality);
+        button = findViewById(R.id.button);
+        editTextLatLong = findViewById(R.id.editTextLatLong);
+        editTextRadius = findViewById(R.id.editTextRadius);
+        textView = findViewById(R.id.textViewLocality);
     }
 
     private void setupTextFields() {
